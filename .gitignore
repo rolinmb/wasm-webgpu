@@ -1,0 +1,7 @@
+src/go/main
+src/go/main.exe
+src/go/security/cert.crt
+src/go/security/pkey.pem
+src/go/security/csr.pem
+dist/main.wasm
+dist/main.js
