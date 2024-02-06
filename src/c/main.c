@@ -1,7 +1,5 @@
 #include <emscripten.h>
 
-int main() { return 0; }
-
 const int SIZE = 4;
 
 EMSCRIPTEN_KEEPALIVE
