@@ -1,14 +1,16 @@
 #include <emscripten.h>
 
-int main() {return 0;}
+int main() { return 0; }
+
+const int SIZE = 4;
 
 EMSCRIPTEN_KEEPALIVE
-void matmul(float A[4][4], float B[4][4], float ab[4][4]) {
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      ab[i][j] = 0.0;
-      for (int k = 0; k < 4; k++) {
-        ab[i][j] += A[i][k] * B[k][j];
+void matmul(float* A, float* B, float* ab) {
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j < SIZE; j++) {
+      ab[i * SIZE + j] = 0.0;
+      for (int k = 0; k < SIZE; k++) {
+        ab[i * SIZE + j] += A[i * SIZE + k] * B[k * SIZE + j];
       }
     }
   }
