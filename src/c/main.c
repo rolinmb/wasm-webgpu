@@ -1,22 +1,7 @@
-#include <emscripten.h>
 #include <stdlib.h>
+#include <emscripten.h>
 
 int main() { return 0; }
-
-const int SIZE = 4;
-
-EMSCRIPTEN_KEEPALIVE
-void matmul(float* A, float* B, float* ab) {
-  for (int i = 0; i < SIZE; i++) {
-    for (int j = 0; j < SIZE; j++) {
-      float result = 0.0;
-      for (int k = 0; k < SIZE; k++) {
-        result += A[i * SIZE + k] * B[k * SIZE + j];
-      }
-      ab[i * SIZE + j] = result;
-    }
-  }
-}
 
 EMSCRIPTEN_KEEPALIVE
 void *wasm_malloc(size_t n) {
@@ -25,5 +10,17 @@ void *wasm_malloc(size_t n) {
 
 EMSCRIPTEN_KEEPALIVE
 void wasm_free(void *ptr) {
-  return free(ptr);
+  free(ptr);
+}
+
+EMSCRIPTEN_KEEPALIVE
+void matrix_multiply(float *result, const float *matrixA, const float *matrixB) {
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      result[i * 4 + j] = 0.0;
+      for (int k = 0; k < 4; k++) {
+        result[i * 4 + j] += matrixA[i * 4 + k] * matrixB[k * 4 + j];
+      }
+    }
+  }
 }
