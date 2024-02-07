@@ -52,12 +52,18 @@
         }).then(results => {
           exports = results.instance.exports;
           // main execution below
+          let ptrA = exports.wasm_malloc(16 * 4);
+          const wasmA = new Float32Array(memory.buffer, ptrA, 16);
+          let ptrB = exports.wasm_malloc(16 * 4);
+          const wasmB = new Float32Array(memory.buffer, ptrB, 16);
           matAB = new Float32Array(16);
-          let ptrAB = exports.wasm_malloc(16 * 4); // len = 16 * 4 bytes per f32
+          let ptrAB = exports.wasm_malloc(16 * 4);
           let resultAB = new Float32Array(memory.buffer, ptrAB, 16);
           resultAB.set(matAB);
-          exports.matrix_multiply(matA, matB, ptrAB);
+          exports.matrix_multiply(wasmA, wasmB, ptrAB);
           matAB.set(resultAB);
+          exports.wasm_free(ptrA);
+          exports.wasm_free(ptrB);
           exports.wasm_free(ptrAB);
           console.log("A * B (wasm-c module):", matAB);
         }).catch(err => {
